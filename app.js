@@ -12,16 +12,16 @@ searchBar.addEventListener("click", async e =>{
     }
 
     //call my API (Weather API)
-    fetch("https://api.openweathermap.org/data/2.5/weather?q=Paris&appid=5e9889ccdfe8d1f2d98aad805b64d7ad")
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${valueCity}&appid=5e9889ccdfe8d1f2d98aad805b64d7ad`)
     .then(responce => {
         if(!responce.ok){
-            //TODO : city is not found
             alert("City not found");
         }
         return responce.json();
     })
     .then(datas => {
-        console.log(datas.main.temp);
+        const temp = convertTemp(datas.main.temp);
+        console.log(temp);
     })
     .catch(errer =>{
         console.error("Problème avec la météo: " + errer);
@@ -29,3 +29,9 @@ searchBar.addEventListener("click", async e =>{
     });
 });
 
+//convert kelvins to celcius because the api 
+//returns the temperature in kelvin
+function convertTemp(kelvin){
+    const celsius = kelvin - 273.15
+    return Math.round(celsius); //rounding to the unit
+}
